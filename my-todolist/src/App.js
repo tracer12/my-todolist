@@ -72,21 +72,19 @@ const App = () => {
   }
 
   const handleSort = () => {
-    //dragItem이 end 될 때 처리하기
-    let _todos = [...todos];
-    const todosId = _todos.map((ele) => ele.id); //ele의 id를 뽑기위한 배열
-    const dragItemIndex = todosId.indexOf(dragItem.current); //drag할 요소의 item
-    const dragOverItemIndex = todosId.indexOf(dragOverItem.current); //swap할 요소의 item
-    [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [
-      _todos[dragOverItemIndex],
-      _todos[dragItemIndex],
-    ]; //es6문법
-    dragItem.current = null;
-    dragOverItem.current = null;
-    setTodos(_todos);
-    /*asdf */
-  };
 
+    let _todos = [...todos]
+
+    const draggedItemContent = _todos.splice(dragItem.current, 1)[0]
+
+    _todos.splice(dragOverItem.current, 0, draggedItemContent)
+
+    dragItem.current = null
+    dragOverItem.current = null
+
+    setTodos(_todos)
+
+  }
 
 
   return (
