@@ -1,30 +1,35 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './App.css';
 import Templete from './components/Templete';
 import TodoList from './components/TodoList';
 import { MdAddCircle } from 'react-icons/md';
 import TodoInsert from './components/TodoInsert';
 
+
 let nextId = 4;
 const App = () => {
+
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
+
   const [selectedTodo, setSeletedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false);
   const [todos, setTodos] = useState([
     {
       id: 1,
-      text: "할일1",
-      checked: true
+      text: "1111111",
+      checked: false
     },
     {
       id: 2,
-      text: "할일2",
+      text: "2222222",
       checked: false
     },
     {
       id: 3,
-      text: "할일3",
-      checked: true
+      text: "3333333",
+      checked: false
     }
   ])
   const onInsertToggle = () => {
@@ -66,12 +71,32 @@ const App = () => {
     setTodos(todos => todos.map(todo => todo.id === id ? { ...todo, text } : todo));
   }
 
+  const handleSort = () => {
+
+    let _todos = [...todos]
+
+    const draggedItemContent = _todos.splice(dragItem.current, 1)[0]
+
+    _todos.splice(dragOverItem.current, 0, draggedItemContent)
+
+    dragItem.current = null
+    dragOverItem.current = null
+
+    setTodos(_todos)
+
+  }
+
+
   return (
     <Templete todoLength={todos.length}>
       <TodoList todos={todos}
         onChangeSelectedTodo={onChangeSelectedTodo}
         onInsertToggle={onInsertToggle}
         onCheckToggle={onCheckToggle}
+        handleSort={handleSort}
+        dragItem={dragItem}
+        dragOverItem={dragOverItem}
+
       />
       <div className="add-todo-button" onClick={onInsertToggle}>
         <MdAddCircle />

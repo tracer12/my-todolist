@@ -2,7 +2,7 @@ import React from "react";
 import TodoItem from "./TodoItem";
 import './TodoList.css';
 
-const TodoList = ({ todos, onCheckToggle, onInsertToggle, onChangeSelectedTodo }) => {
+const TodoList = ({ todos, onCheckToggle, onInsertToggle, onChangeSelectedTodo, handleSort, dragItem, dragOverItem }) => {
     return (
         <div className="TodoList">
             {todos.map(todo => (
@@ -11,6 +11,9 @@ const TodoList = ({ todos, onCheckToggle, onInsertToggle, onChangeSelectedTodo }
                     onCheckToggle={onCheckToggle}
                     onInsertToggle={onInsertToggle}
                     onChangeSelectedTodo={onChangeSelectedTodo}
+                    handleSort={handleSort}
+                    dragItem={dragItem}
+                    dragOverItem={dragOverItem}
                 />
             ))}
         </div>
