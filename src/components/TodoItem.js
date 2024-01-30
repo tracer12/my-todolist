@@ -11,7 +11,7 @@ const TodoItem = ({
     dragItem,
     dragOverItem,
 }) => {
-    const { id, text, checked } = todo;
+    const { id, description, isDone } = todo;
 
     return (
         <div
@@ -26,8 +26,8 @@ const TodoItem = ({
             onDragEnd={handleSort}
             onDragOver={(e) => e.preventDefault()}
         >
-            <div className={checked ? "content" : "nocontent"}>
-                {checked ? (
+            <div className={isDone ? "content" : "nocontent"}>
+                {isDone ? (
                     <MdCheckBox onClick={() => onCheckToggle(id)} />
                 ) : (
                     <MdCheckBoxOutlineBlank onClick={() => onCheckToggle(id)} />
@@ -39,7 +39,7 @@ const TodoItem = ({
                         onInsertToggle();
                     }}
                 >
-                    {text}
+                    {description}
                 </div>
             </div>
         </div>

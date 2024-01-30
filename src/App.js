@@ -1,5 +1,5 @@
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './App.css';
 import Templete from './components/Templete';
 import TodoList from './components/TodoList';
@@ -15,60 +15,53 @@ const App = () => {
 
   const [selectedTodo, setSeletedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false);
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: "1111111",
-      checked: false
-    },
-    {
-      id: 2,
-      text: "2222222",
-      checked: false
-    },
-    {
-      id: 3,
-      text: "3333333",
-      checked: false
-    }
-  ])
+  const [todos, setTodos] = useState(null)
+
+  useEffect(() => {
+    fetch('http://api.pol.or.kr:8080/api/todo-list/task/abc')
+      .then((response) => response.json())
+      .then((data) =>
+        setTodos(data)
+        //console.log(data)
+      );
+  }, [])
+
   const onInsertToggle = () => {
     if (selectedTodo) {
       setSeletedTodo(null);
     }
     setInsertToggle(prev => !prev)
   }
-  const onInsertTodo = (text) => {
-    if (text === '') {
+  const onInsertTodo = (description) => {
+    if (description === '') {
       return alert('할 일을 입력해주세요');
     }
     else {
       const todo = {
         id: nextId,
-        text,
-        checked: false
+        description,
+        isDone: false
       }
-      setTodos(todos => todos.concat(todo));
+      setTodos(todos => todos.taskList.concat(todo));
       nextId++;
     }
   }
 
   const onCheckToggle = (id) => {
-    setTodos(todos => todos.map(todo => (todo.id === id ? { ...todo, checked: !todo.checked } : todo)))
+    setTodos(todos => todos.taskList.map(todo => (todo.id === id ? { ...todo, inDone: !todo.isDone } : todo)))
   }
-
   const onChangeSelectedTodo = (todo) => {
     setSeletedTodo(todo);
   }
 
   const onRemove = id => {
     onInsertToggle();
-    setTodos(todos => todos.filter(todo => todo.id !== id));
+    setTodos(todos => todos && todos.taskList.filter(todo => todo.id !== id));
   };
 
   const onUpdate = (id, text) => {
     onInsertToggle();
-    setTodos(todos => todos.map(todo => todo.id === id ? { ...todo, text } : todo));
+    setTodos(todos => todos && todos.taskList.map(todo => todo.id === id ? { ...todo, text } : todo));
   }
 
   const handleSort = () => {
@@ -77,10 +70,7 @@ const App = () => {
     const todosId = _todos.map((ele) => ele.id); //ele의 id를 뽑기위한 배열
     const dragItemIndex = todosId.indexOf(dragItem.current); //drag할 요소의 item
     const dragOverItemIndex = todosId.indexOf(dragOverItem.current); //swap할 요소의 item
-    [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [
-      _todos[dragOverItemIndex],
-      _todos[dragItemIndex],
-    ]; //es6문법
+    [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [_todos[dragOverItemIndex], _todos[dragItemIndex],]; //es6문법
     dragItem.current = null;
     dragOverItem.current = null;
     setTodos(_todos);
@@ -90,7 +80,7 @@ const App = () => {
 
 
   return (
-    <Templete todoLength={todos.length}>
+    <Templete /*todoLength={todos && todos.taskList.length}*/>
       <TodoList todos={todos}
         onChangeSelectedTodo={onChangeSelectedTodo}
         onInsertToggle={onInsertToggle}

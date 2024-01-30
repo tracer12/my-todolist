@@ -5,7 +5,7 @@ import './TodoList.css';
 const TodoList = ({ todos, onCheckToggle, onInsertToggle, onChangeSelectedTodo, handleSort, dragItem, dragOverItem }) => {
     return (
         <div className="TodoList">
-            {todos.map(todo => (
+            {todos && todos.taskList.map((todo, id) => (
                 <TodoItem todo={todo}
                     key={todo.id}
                     onCheckToggle={onCheckToggle}
