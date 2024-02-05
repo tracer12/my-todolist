@@ -27,19 +27,10 @@ const TodoItem = ({
             onDragOver={(e) => e.preventDefault()}
         >
             <div className={isDone ? "content" : "nocontent"}>
-                {isDone ? (
-                    <MdCheckBox onClick={() => onCheckToggle(id)} />
-                ) : (
-                    <MdCheckBoxOutlineBlank onClick={() => onCheckToggle(id)} />
-                )}
-                <div
-                    className="text"
-                    onClick={() => {
-                        onChangeSelectedTodo(todo);
-                        onInsertToggle();
-                    }}
-                >
+                {isDone ? (<MdCheckBox onClick={() => onCheckToggle(id)} />) : (<MdCheckBoxOutlineBlank onClick={() => onCheckToggle(id)} />)}
+                <div className="text" onClick={() => { onChangeSelectedTodo(todo); onInsertToggle(); }}>
                     {description}
+
                 </div>
             </div>
         </div>
