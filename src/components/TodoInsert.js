@@ -24,17 +24,21 @@ const TodoInsert = ({ onInsertToggle, onInsertTodo, selectedTodo, onRemove, onUp
         }
     }, [selectedTodo])
 
-    // onRemove, onUpdate를 사용 안해도 Cannot read properties of undefined (reading 'map') 에러가 뜬다
-    // onInsertTodo 에서 문제가 생기는거 같다.
 
     return (
         <div>
             <div className="background" onClick={onInsertToggle}></div>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={selectedTodo ? () => { onUpdate(selectedTodo.id, value) } : onSubmit}>
                 <input placeholder="please type" value={value} onChange={onChange}></input>
-                <button type="submit" className="addbutton">
+                {selectedTodo ? (
+                    <div className="rewrite">
+                        <TiPencil onClick={() => onUpdate(selectedTodo.id, value)} />
+                        <TiTrash onClick={() => onRemove(selectedTodo.id)} />
+                    </div>
+                ) : (<button type="submit" className="addbutton">
                     <MdAddCircle />
                 </button>
+                )}
             </form>
         </div >
 
