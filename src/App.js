@@ -48,12 +48,14 @@ const App = () => {
       const todo = {
         id: nextId,
         description,
-        startDate: " ",
-        endDate: " ",
+        startDate: "123",
+        endDate: "321",
         isDone: false
       }
-      setTodos(todos => todos?.taskList.concat(todo)); // 씨발 이부분이 문제인데 어떻게 고치지?
+      // ex) todo.startDate 찍어보면 제대로 출력이 된다
+      setTodos((todos) => [...todos, todo])// 씨발 이부분이 문제인데 어떻게 고치지?
       nextId++;
+      //console.log(nextId)
     }
   }
 
