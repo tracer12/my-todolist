@@ -7,7 +7,7 @@ import { MdAddCircle } from 'react-icons/md';
 import TodoInsert from './components/TodoInsert';
 
 
-let nextId = 4;
+let nextId = 5;
 const App = () => {
 
   const token = "bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiU1VQRVJfQURNSU4iLCJhdWQiOiJQT0wtQkRCRWVqLUdqNUFudFpwcloiLCJpYXQiOjE3MDcxMjEwNzQsImlzcyI6ImFwaS5wb2wub3Iua3IiLCJleHAiOjE3MTQ4OTcwNzR9.1FQydJ7Hca2YRNjPKLshy7LQqbDKaf3QGGEcs57K5YqIsU2mUihA9SYbpE3B7Wdu27IlMLFpUfgxvmJQyY-IDA";
@@ -46,16 +46,16 @@ const App = () => {
     }
     else {
       const todo = {
-        id: nextId,
+        id: "yumin-abc-" + nextId,
         description,
-        startDate: "123",
-        endDate: "321",
+        startDate: "00:00:00",
+        endDate: "00:00:00",
         isDone: false
       }
       // ex) todo.startDate 찍어보면 제대로 출력이 된다
-      setTodos((todos) => [...todos, todo])// 씨발 이부분이 문제인데 어떻게 고치지?
+      setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] }))// 씨발 이부분이 문제인데 어떻게 고치지?
       nextId++;
-      //console.log(nextId)
+      console.log(nextId)
     }
   }
 
@@ -82,12 +82,35 @@ const App = () => {
 
   const onRemove = (id) => {
     onInsertToggle();
-    setTodos(todos => todos && todos.taskList.filter(todo => todo.id !== id));
+    console.log(id);
+    //setTodos(todos => todos && todos.filter(todo => todo.id !== id));
+    setTodos((prevTodos) => {
+      const updatedTaskList = prevTodos.taskList.filter((todo) =>
+        todo.id !== id
+      );
+
+      return {
+        ...prevTodos,
+        taskList: updatedTaskList,
+      };
+    });
   };
 
-  const onUpdate = (id, text) => {
-    onInsertToggle();
-    setTodos(todos => todos && todos.taskList.map(todo => todo.id === id ? { ...todo, text } : todo));
+  const onUpdate = (id, description) => { // id값이랑 text 받아서 호출당하면
+    //console.log(text)
+    //console.log(todos.taskList.id)
+    onInsertToggle(); // 창닫고
+    //setTodos(todos => todos.taskList.map(todo => todo.taskList.id === id ? { ...todo.taskList, text } : todo)); // 가져온 글자만 박아넣으면 된다.
+    setTodos((prevTodos) => {
+      const updatedTaskList = prevTodos.taskList.map((todo) =>
+        todo.id === id ? { ...todo, description: description } : todo
+      );
+
+      return {
+        ...prevTodos,
+        taskList: updatedTaskList,
+      };
+    });
   }
 
   const handleSort = () => {
