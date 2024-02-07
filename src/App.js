@@ -55,7 +55,7 @@ const App = () => {
       // ex) todo.startDate 찍어보면 제대로 출력이 된다
       setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] }))// 씨발 이부분이 문제인데 어떻게 고치지?
       nextId++;
-      console.log(nextId)
+      //console.log(nextId)
     }
   }
 
@@ -113,23 +113,36 @@ const App = () => {
     });
   }
 
-  const handleSort = () => {
+  const handleSort = () => { // taskList 안에 객체들을 교환해야한다
     //dragItem이 end 될 때 처리하기
-    let _todos = [...todos];
-    const todosId = _todos.map((ele) => ele.id); //ele의 id를 뽑기위한 배열
-    const dragItemIndex = todosId.indexOf(dragItem.current); //drag할 요소의 item
-    const dragOverItemIndex = todosId.indexOf(dragOverItem.current); //swap할 요소의 item
+    let _todos = [...todos.taskList]; //todos의 taskList를 복사해서 _todos에 넣어준다
+    //console.log(_todos)
+    const todosId = _todos.map((ele) => ele.id); //ele의 id를 뽑기위한 배열 이려면 yumin-abc-0,1,2,3,4가 todoId에 뽑혀나옴
+    //console.log(todosId);
+    const dragItemIndex = todosId.indexOf(dragItem.current); //drag할 요소의 item 인덱스값이 들어감
+    const dragOverItemIndex = todosId.indexOf(dragOverItem.current); //swap할 요소의 item 인덱스값이 들어감
+    // console.log(dragItemIndex);
+    // console.log(dragOverItemIndex);
     [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [_todos[dragOverItemIndex], _todos[dragItemIndex],]; //es6문법
     dragItem.current = null;
     dragOverItem.current = null;
-    setTodos(_todos);
-    /*asdf */
+
+    //console.log(_todos)
+    //console.log(_todos)
+    setTodos((prevTodos) => {
+      const updatedTaskList = _todos
+
+      return {
+        //...prevTodos,
+        taskList: updatedTaskList,
+      };
+    });
   };
 
 
 
   return (
-    <Templete /*todoLength={todos && todos.taskList.length}*/>
+    <Templete todoLength={todos && todos.taskList.length}>
       <TodoList todos={todos}
         onChangeSelectedTodo={onChangeSelectedTodo}
         onInsertToggle={onInsertToggle}

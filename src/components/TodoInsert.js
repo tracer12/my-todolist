@@ -8,7 +8,7 @@ const TodoInsert = ({ onInsertToggle, onInsertTodo, selectedTodo, onRemove, onUp
 
     const onChange = e => { //입력한 값
         setValue(e.target.value);
-        console.log(e.target.value);
+        //console.log(e.target.value);
     };
     const onSubmit = e => {
         e.preventDefault(); // 새로고침 방지
