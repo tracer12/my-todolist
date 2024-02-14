@@ -19,7 +19,7 @@ const App = () => {
   const [insertToggle, setInsertToggle] = useState(false); // 참 거짓 함수, 메인화면의 +버튼을 눌렀을때만 컴포넌트가 떠야되므로
   const [todos, setTodos] = useState(null)
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch('http://api.pol.or.kr:8080/api/todo-list/task/abc', {
       method: 'GET',
       headers: {
@@ -31,7 +31,9 @@ const App = () => {
         setTodos(data)
         //console.log(data)
       );
-  }, [])
+  }
+
+  useEffect(() => { fetchData() }, [])
 
   const onInsertToggle = () => { // insertToggle을 참 거짓으로 바꿔주는 함수
     if (selectedTodo) {
@@ -40,24 +42,53 @@ const App = () => {
     setInsertToggle(prev => !prev)
   }
 
+  // const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
+  //   if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
+  //     return alert('할 일을 입력해주세요');
+  //   }
+  //   else {
+  //     const todo = {
+  //       id: "yumin-abc-" + nextId,
+  //       description,
+  //       startDate: "00:00:00",
+  //       endDate: "00:00:00",
+  //       isDone: false
+  //     }
+  //     // ex) todo.startDate 찍어보면 제대로 출력이 된다
+  //     setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] })) // 이 부분을 
+  //     nextId++;
+  //     //console.log(nextId)
+  //   }
+  // }
   const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
     if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
       return alert('할 일을 입력해주세요');
     }
     else {
-      const todo = {
-        id: "yumin-abc-" + nextId,
-        description,
-        startDate: "00:00:00",
-        endDate: "00:00:00",
-        isDone: false
-      }
-      // ex) todo.startDate 찍어보면 제대로 출력이 된다
-      setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] }))// 씨발 이부분이 문제인데 어떻게 고치지?
-      nextId++;
-      //console.log(nextId)
+      const id = "yumin-abc-" + nextId
+      const text = description
+      const startDate = "00:00:00"
+      const endDate = "00:00:00"
+      const isDone = false
+
+      fetch('http://api.pol.or.kr/api/todo-list/task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token
+        },
+        body: JSON.stringify({
+
+          id: id,
+          description: text,
+          startDate: startDate,
+          endDate: endDate,
+          isDone: isDone,
+        })
+      }).then(() => { fetchData() })
     }
   }
+
 
   // const onCheckToggle = (id) => {
   //   setTodos(todos => todos.taskList.map(todo => (todo.id === id ? { ...todo, isDone: !todo.isDone } : todo)))
@@ -82,7 +113,7 @@ const App = () => {
 
   const onRemove = (id) => {
     onInsertToggle();
-    console.log(id);
+    //console.log(id);
     //setTodos(todos => todos && todos.filter(todo => todo.id !== id));
     setTodos((prevTodos) => {
       const updatedTaskList = prevTodos.taskList.filter((todo) =>
@@ -123,7 +154,8 @@ const App = () => {
     const dragOverItemIndex = todosId.indexOf(dragOverItem.current); //swap할 요소의 item 인덱스값이 들어감
     // console.log(dragItemIndex);
     // console.log(dragOverItemIndex);
-    [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [_todos[dragOverItemIndex], _todos[dragItemIndex],]; //es6문법
+    [_todos[dragItemIndex], _todos[dragOverItemIndex]] = [_todos[dragOverItemIndex], _todos[dragItemIndex],]; //es6문법, 두 인덱스 위치 바꿔주는
+    // 문법인거 같다.
     dragItem.current = null;
     dragOverItem.current = null;
 
