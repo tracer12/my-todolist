@@ -113,13 +113,17 @@ const App = () => {
       }
       )
         .then(response => response.json())
-        .then(response => console.log(response))
+        .then(response => {
+          console.log(response)
+          return response
+        })
 
       //.then(response => response.json())
       //.then(response => console.log(response, "test"))
       // .then((code) => setCodes(code))
       //.then(console.log(codes))
       //.then(fetchData())
+      return response
     }
   }
 
