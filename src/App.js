@@ -11,16 +11,33 @@ let nextId = 5;
 const App = () => {
 
   const token = "bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiU1VQRVJfQURNSU4iLCJhdWQiOiJQT0wtQkRCRWVqLUdqNUFudFpwcloiLCJpYXQiOjE3MDcxMjEwNzQsImlzcyI6ImFwaS5wb2wub3Iua3IiLCJleHAiOjE3MTQ4OTcwNzR9.1FQydJ7Hca2YRNjPKLshy7LQqbDKaf3QGGEcs57K5YqIsU2mUihA9SYbpE3B7Wdu27IlMLFpUfgxvmJQyY-IDA";
-
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
 
   const [selectedTodo, setSeletedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false); // 참 거짓 함수, 메인화면의 +버튼을 눌렀을때만 컴포넌트가 떠야되므로
   const [todos, setTodos] = useState(null)
+  const [codes, setCodes] = useState("abc");
 
-  const fetchData = () => {
+
+  useEffect(() => {
     fetch('http://api.pol.or.kr:8080/api/todo-list/task/abc', {
+      method: 'GET',
+      headers: {
+        Authorization: token
+      }
+    })
+      .then((response) => response.json())
+      .then((data) =>
+        setTodos(data)
+        //console.log(data)
+      )
+      ;
+  }, [])
+
+
+  function fetchData(codes) {
+    fetch('http://api.pol.or.kr:8080/api/todo-list/task/' + codes, {
       method: 'GET',
       headers: {
         Authorization: token
@@ -33,7 +50,8 @@ const App = () => {
       );
   }
 
-  useEffect(() => { fetchData() }, [])
+
+
 
   const onInsertToggle = () => { // insertToggle을 참 거짓으로 바꿔주는 함수
     if (selectedTodo) {
@@ -60,34 +78,52 @@ const App = () => {
   //     //console.log(nextId)
   //   }
   // }
-  const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
+
+  async function onInsertTodo(description) { // 추가버튼 누르면 호출되는 함수(목록추가)
     if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
       return alert('할 일을 입력해주세요');
     }
     else {
-      const id = "yumin-abc-" + nextId
+      const id = ""
       const text = description
-      const startDate = "00:00:00"
-      const endDate = "00:00:00"
+      const startDate = "2024-02-14T08:10:45"
+      const endDate = "2024-02-14T08:10:45"
       const isDone = false
 
-      fetch('http://api.pol.or.kr/api/todo-list/task', {
+      const response = await fetch('https://api.pol.or.kr/api/todo-list/task', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: token
         },
         body: JSON.stringify({
+          author: "asdf",
 
-          id: id,
-          description: text,
-          startDate: startDate,
-          endDate: endDate,
-          isDone: isDone,
-        })
-      }).then(() => { fetchData() })
+          taskList: [
+            {
+              id: id,
+              description: text,
+              startDate: startDate,
+              endDate: endDate,
+              isDone: isDone,
+            }
+          ]
+        }
+        )
+      }
+      )
+        .then(response => response.json())
+        .then(response => console.log(response))
+
+      //.then(response => response.json())
+      //.then(response => console.log(response, "test"))
+      // .then((code) => setCodes(code))
+      //.then(console.log(codes))
+      //.then(fetchData())
     }
   }
+
+  //useEffect(() => { fetchData(codes) }, [codes])
 
 
   // const onCheckToggle = (id) => {

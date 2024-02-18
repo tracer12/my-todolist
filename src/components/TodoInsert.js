@@ -5,15 +5,20 @@ import "./TodoInsert.css";
 
 const TodoInsert = ({ onInsertToggle, onInsertTodo, selectedTodo, onRemove, onUpdate }) => {
     const [value, setValue] = useState("");
+    //const [codes, setCodes] = useState("kkk");
 
     const onChange = e => { //입력한 값
         setValue(e.target.value);
         //console.log(e.target.value);
     };
-    const onSubmit = e => {
+
+    async function onSubmit(e) {
         e.preventDefault(); // 새로고침 방지
-        onInsertTodo(value); // 값을 받아와서 onInsertTodo에 넘겨줌
-        //console.log(value);
+
+        const code = await onInsertTodo(value).then(res => res) // 값을 받아와서 onInsertTodo에 넘겨줌
+        //setCodes(code);
+        console.log(code, "test");
+
         setValue(""); // 다시 초기화 해주고
         onInsertToggle(); // 창을 닫음
     }
