@@ -1,11 +1,35 @@
 .add-todo-button {
   position: fixed;
-  right: -5px;
+  right: 150px;
+  bottom: 0;
+  z-index: 100;
+  width: 100px;
+  height: 110px;
+  cursor: pointer;
+  font-size: 5rem;
+  color: #f67280;
+}
+
+.upload-todo-button {
+  position: fixed;
+  right: 70px;
   bottom: 0;
   z-index: 100;
   width: 100px;
   height: 100px;
   cursor: pointer;
-  font-size: 5rem;
+  font-size: 4rem;
+  color: #f67280;
+}
+
+.download-todo-button {
+  position: fixed;
+  right: 0px;
+  bottom: 0;
+  z-index: 100;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  font-size: 4rem;
   color: #f67280;
 }

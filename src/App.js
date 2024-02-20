@@ -4,6 +4,8 @@ import './App.css';
 import Templete from './components/Templete';
 import TodoList from './components/TodoList';
 import { MdAddCircle } from 'react-icons/md';
+import { FaUpload } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 import TodoInsert from './components/TodoInsert';
 
 
@@ -226,6 +228,12 @@ const App = () => {
       />
       <div className="add-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <MdAddCircle />
+      </div>
+      <div className="upload-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+        <FaUpload />
+      </div>
+      <div className="download-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+        <FaDownload />
       </div>
       {insertToggle &&
         <TodoInsert
