@@ -62,72 +62,95 @@ const App = () => {
     setInsertToggle(prev => !prev)
   }
 
-  // const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
-  //   if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
-  //     return alert('할 일을 입력해주세요');
-  //   }
-  //   else {
-  //     const todo = {
-  //       id: "yumin-abc-" + nextId,
-  //       description,
-  //       startDate: "00:00:00",
-  //       endDate: "00:00:00",
-  //       isDone: false
-  //     }
-  //     // ex) todo.startDate 찍어보면 제대로 출력이 된다
-  //     setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] })) // 이 부분을 
-  //     nextId++;
-  //     //console.log(nextId)
-  //   }
-  // }
-
-  async function onInsertTodo(description) { // 추가버튼 누르면 호출되는 함수(목록추가)
+  const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
     if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
       return alert('할 일을 입력해주세요');
     }
     else {
-      const id = ""
-      const text = description
-      const startDate = "2024-02-14T08:10:45"
-      const endDate = "2024-02-14T08:10:45"
-      const isDone = false
-
-      const response = await fetch('https://api.pol.or.kr/api/todo-list/task', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token
-        },
-        body: JSON.stringify({
-          author: "asdf",
-
-          taskList: [
-            {
-              id: id,
-              description: text,
-              startDate: startDate,
-              endDate: endDate,
-              isDone: isDone,
-            }
-          ]
-        }
-        )
+      const todo = {
+        id: "yumin-abc-" + nextId,
+        description,
+        startDate: "2024-02-14T08:10:45",
+        endDate: "2024-02-14T08:10:45",
+        isDone: false
       }
-      )
-        .then(response => response.json())
-        .then(response => {
-          console.log(response)
-          return response
-        })
-
-      //.then(response => response.json())
-      //.then(response => console.log(response, "test"))
-      // .then((code) => setCodes(code))
-      //.then(console.log(codes))
-      //.then(fetchData())
-      return response
+      // ex) todo.startDate 찍어보면 제대로 출력이 된다
+      setTodos((preTodo) => ({ taskList: [...preTodo.taskList, todo] })) // 이 부분을 
+      nextId++;
     }
   }
+
+  async function onUploadTodo() { // 추가버튼 누르면 호출되는 함수(목록추가)
+
+    const response = await fetch('https://api.pol.or.kr/api/todo-list/task', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token
+      },
+      body: JSON.stringify({
+        author: "asdf",
+        taskList: todos.value()
+      }
+      )
+    }
+    )
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        return response
+      })
+      .then(console.log(JSON.stringify({ author: "asdf", taskList: todos })));
+    return response
+  }
+
+  // async function onInsertTodo(description) { // 추가버튼 누르면 호출되는 함수(목록추가)
+  //   if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
+  //     return alert('할 일을 입력해주세요');
+  //   }
+  //   else {
+  //     const id = ""
+  //     const text = description
+  //     const startDate = "2024-02-14T08:10:45"
+  //     const endDate = "2024-02-14T08:10:45"
+  //     const isDone = false
+
+  //     const response = await fetch('https://api.pol.or.kr/api/todo-list/task', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: token
+  //       },
+  //       body: JSON.stringify({
+  //         author: "asdf",
+
+  //         taskList: [
+  //           {
+  //             id: id,
+  //             description: text,
+  //             startDate: startDate,
+  //             endDate: endDate,
+  //             isDone: isDone,
+  //           }
+  //         ]
+  //       }
+  //       )
+  //     }
+  //     )
+  //       .then(response => response.json())
+  //       .then(response => {
+  //         console.log(response)
+  //         return response
+  //       })
+
+  //     //.then(response => response.json())
+  //     //.then(response => console.log(response, "test"))
+  //     // .then((code) => setCodes(code))
+  //     //.then(console.log(codes))
+  //     //.then(fetchData())
+  //     return response
+  //   }
+  // }
 
   //useEffect(() => { fetchData(codes) }, [codes])
 
@@ -229,7 +252,7 @@ const App = () => {
       <div className="add-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <MdAddCircle />
       </div>
-      <div className="upload-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+      <div className="upload-todo-button" onClick={onUploadTodo}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaUpload />
       </div>
       <div className="download-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>

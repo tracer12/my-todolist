@@ -12,15 +12,23 @@ const TodoInsert = ({ onInsertToggle, onInsertTodo, selectedTodo, onRemove, onUp
         //console.log(e.target.value);
     };
 
-    async function onSubmit(e) {
+    // async function onSubmit(e) {
+    //     e.preventDefault(); // 새로고침 방지
+
+    //     const code = await onInsertTodo(value).then(res => res) // 값을 받아와서 onInsertTodo에 넘겨줌
+    //     //setCodes(code);
+    //     //console.log(code, "test");
+
+    //     setValue(""); // 다시 초기화 해주고
+    //     onInsertToggle(); // 창을 닫음
+    // }
+
+    const onSubmit = (e) => {
         e.preventDefault(); // 새로고침 방지
 
-        const code = await onInsertTodo(value).then(res => res) // 값을 받아와서 onInsertTodo에 넘겨줌
-        //setCodes(code);
-        console.log(code, "test");
-
-        setValue(""); // 다시 초기화 해주고
-        onInsertToggle(); // 창을 닫음
+        onInsertTodo(value);
+        setValue("");
+        onInsertToggle();
     }
 
     useEffect(() => {
