@@ -90,7 +90,7 @@ const App = () => {
       },
       body: JSON.stringify({
         author: "asdf",
-        taskList: todos.value()
+        taskList: Object.values(todos.taskList)
       }
       )
     }
@@ -100,7 +100,7 @@ const App = () => {
         console.log(response)
         return response
       })
-      .then(console.log(JSON.stringify({ author: "asdf", taskList: todos })));
+    //.then(console.log(JSON.stringify({ author: "asdf", taskList: todos })));
     return response
   }
 
