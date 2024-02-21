@@ -8,6 +8,7 @@ import { FaUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 import TodoInsert from './components/TodoInsert';
 import TodoUpload from './components/TodoUpload';
+import TodoDownload from './components/TodoDownload';
 
 
 let nextId = 5;
@@ -20,6 +21,7 @@ const App = () => {
   const [selectedTodo, setSeletedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false); // 참 거짓 함수, 메인화면의 +버튼을 눌렀을때만 컴포넌트가 떠야되므로
   const [uploadToggle, setUploadToggle] = useState(false);
+  const [downloadToggle, setDownloadToggle] = useState(false);
   const [todos, setTodos] = useState(null)
   const [codes, setCodes] = useState(null);
 
@@ -65,6 +67,10 @@ const App = () => {
     setUploadToggle(prev => !prev)
   }
 
+  const onDownloadToggle = () => {
+    setDownloadToggle(prev => !prev)
+  }
+
   const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
     if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
       return alert('할 일을 입력해주세요');
@@ -100,7 +106,7 @@ const App = () => {
     )
       .then(response => response.json())
       .then(response => {
-        //console.log(response)
+        console.log(response)
         return response
       })
     //.then(console.log(JSON.stringify({ author: "asdf", taskList: todos })));
@@ -193,10 +199,6 @@ const App = () => {
     });
   };
 
-
-
-
-
   return (
     <Templete todoLength={todos && todos.taskList.length}>
       <TodoList todos={todos}
@@ -215,7 +217,7 @@ const App = () => {
       <div className="upload-todo-button" onClick={() => { onUploadToggle(); onUploadTodo(); }}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaUpload />
       </div>
-      <div className="download-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+      <div className="download-todo-button" onClick={onDownloadToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaDownload />
       </div>
 
@@ -226,6 +228,11 @@ const App = () => {
           onUploadTodo={onUploadTodo}
           codes={codes.code}
         />
+      }
+
+      {
+        downloadToggle &&
+        <TodoDownload />
       }
 
       {
