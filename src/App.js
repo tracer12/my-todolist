@@ -7,6 +7,7 @@ import { MdAddCircle } from 'react-icons/md';
 import { FaUpload } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 import TodoInsert from './components/TodoInsert';
+import TodoUpload from './components/TodoUpload';
 
 
 let nextId = 5;
@@ -18,6 +19,7 @@ const App = () => {
 
   const [selectedTodo, setSeletedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false); // 참 거짓 함수, 메인화면의 +버튼을 눌렀을때만 컴포넌트가 떠야되므로
+  const [uploadToggle, setUploadToggle] = useState(false);
   const [todos, setTodos] = useState(null)
   const [codes, setCodes] = useState("abc");
 
@@ -52,14 +54,15 @@ const App = () => {
       );
   }
 
-
-
-
   const onInsertToggle = () => { // insertToggle을 참 거짓으로 바꿔주는 함수
     if (selectedTodo) {
       setSeletedTodo(null);
     }
     setInsertToggle(prev => !prev)
+  }
+
+  const onUploadToggle = () => {
+    setUploadToggle(prev => !prev)
   }
 
   const onInsertTodo = (description) => { // 추가버튼 누르면 호출되는 함수(목록추가)
@@ -238,6 +241,8 @@ const App = () => {
 
 
 
+
+
   return (
     <Templete todoLength={todos && todos.taskList.length}>
       <TodoList todos={todos}
@@ -249,15 +254,22 @@ const App = () => {
         dragOverItem={dragOverItem}
 
       />
-      <div className="add-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+
+      <div className="add-todo-button" onClick={onInsertToggle} /*이게 추가 컴포넌트 띄우는 부분*/>
         <MdAddCircle />
       </div>
-      <div className="upload-todo-button" onClick={onUploadTodo}/*이게 추가 컴포넌트 띄우는 부분*/>
+      <div className="upload-todo-button" onClick={onUploadToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaUpload />
       </div>
       <div className="download-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaDownload />
       </div>
+      {uploadToggle &&
+        <TodoUpload
+          onUploadToggle={onUploadToggle}
+          onUploadTodo={onUploadTodo}
+        />
+      }
       {insertToggle &&
         <TodoInsert
           onInsertToggle={onInsertToggle}
@@ -266,6 +278,7 @@ const App = () => {
           onRemove={onRemove}
           onUpdate={onUpdate}
         />}
+
     </Templete>
   )
 }
