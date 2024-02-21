@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./TodoUpload.css";
 
-const TodoUpload = ({ onUploadToggle, onUploadTodo }) => {
+const TodoUpload = ({ onUploadToggle, codes }) => {
 
-    async function onClick(e) {
-        e.preventDefault(); // 새로고침 방지
-        const code = await onUploadTodo().then(res => res) // 값을 받아와서 onInsertTodo에 넘겨줌
-        //setCodes(code);
-        console.log(code, "test");
-    }
+
+
+    // useEffect(() => {
+    //     if (selectedTodo) {
+    //         setValue(selectedTodo.description);
+    //     }
+    // }, [selectedTodo])
+
+    // async function onClick() {
+    //     const code = await onUploadTodo().then(res => res)
+    //     setCodes(code)
+    //     console.log(codes, "test")
+    // }
+
 
     return (
         <div>
             <div className="background2" onClick={onUploadToggle}></div>
-            <form>
-                <div className="code" onClick={() => onClick}>asdf</div>
-            </form>
+            <div className="code">
+                {codes}
+            </div>
         </div >
     );
 }

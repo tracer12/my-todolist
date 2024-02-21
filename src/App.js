@@ -21,7 +21,7 @@ const App = () => {
   const [insertToggle, setInsertToggle] = useState(false); // 참 거짓 함수, 메인화면의 +버튼을 눌렀을때만 컴포넌트가 떠야되므로
   const [uploadToggle, setUploadToggle] = useState(false);
   const [todos, setTodos] = useState(null)
-  const [codes, setCodes] = useState("abc");
+  const [codes, setCodes] = useState(null);
 
 
   useEffect(() => {
@@ -100,60 +100,14 @@ const App = () => {
     )
       .then(response => response.json())
       .then(response => {
-        console.log(response)
+        //console.log(response)
         return response
       })
     //.then(console.log(JSON.stringify({ author: "asdf", taskList: todos })));
+    setCodes(response);
     return response
   }
 
-  // async function onInsertTodo(description) { // 추가버튼 누르면 호출되는 함수(목록추가)
-  //   if (description === '') { // description이 제대로 넘어와서 출력도 되고 여기까진 실행이 됨
-  //     return alert('할 일을 입력해주세요');
-  //   }
-  //   else {
-  //     const id = ""
-  //     const text = description
-  //     const startDate = "2024-02-14T08:10:45"
-  //     const endDate = "2024-02-14T08:10:45"
-  //     const isDone = false
-
-  //     const response = await fetch('https://api.pol.or.kr/api/todo-list/task', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: token
-  //       },
-  //       body: JSON.stringify({
-  //         author: "asdf",
-
-  //         taskList: [
-  //           {
-  //             id: id,
-  //             description: text,
-  //             startDate: startDate,
-  //             endDate: endDate,
-  //             isDone: isDone,
-  //           }
-  //         ]
-  //       }
-  //       )
-  //     }
-  //     )
-  //       .then(response => response.json())
-  //       .then(response => {
-  //         console.log(response)
-  //         return response
-  //       })
-
-  //     //.then(response => response.json())
-  //     //.then(response => console.log(response, "test"))
-  //     // .then((code) => setCodes(code))
-  //     //.then(console.log(codes))
-  //     //.then(fetchData())
-  //     return response
-  //   }
-  // }
 
   //useEffect(() => { fetchData(codes) }, [codes])
 
@@ -258,28 +212,34 @@ const App = () => {
       <div className="add-todo-button" onClick={onInsertToggle} /*이게 추가 컴포넌트 띄우는 부분*/>
         <MdAddCircle />
       </div>
-      <div className="upload-todo-button" onClick={onUploadToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
+      <div className="upload-todo-button" onClick={() => { onUploadToggle(); onUploadTodo(); }}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaUpload />
       </div>
       <div className="download-todo-button" onClick={onInsertToggle}/*이게 추가 컴포넌트 띄우는 부분*/>
         <FaDownload />
       </div>
-      {uploadToggle &&
+
+      {
+        uploadToggle && codes &&
         <TodoUpload
           onUploadToggle={onUploadToggle}
           onUploadTodo={onUploadTodo}
+          codes={codes.code}
         />
       }
-      {insertToggle &&
+
+      {
+        insertToggle &&
         <TodoInsert
           onInsertToggle={onInsertToggle}
           onInsertTodo={onInsertTodo}
           selectedTodo={selectedTodo}
           onRemove={onRemove}
           onUpdate={onUpdate}
-        />}
+        />
+      }
 
-    </Templete>
+    </Templete >
   )
 }
 

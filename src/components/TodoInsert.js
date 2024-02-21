@@ -25,7 +25,7 @@ const TodoInsert = ({ onInsertToggle, onInsertTodo, selectedTodo, onRemove, onUp
 
     const onSubmit = (e) => {
         e.preventDefault(); // 새로고침 방지
-
+        console.log("asdf")
         onInsertTodo(value);
         setValue("");
         onInsertToggle();
