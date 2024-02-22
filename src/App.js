@@ -42,7 +42,7 @@ const App = () => {
   }, [])
 
 
-  function fetchData(codes) {
+  function DownloadData(codes) {
     fetch('http://api.pol.or.kr:8080/api/todo-list/task/' + codes, {
       method: 'GET',
       headers: {
@@ -98,7 +98,7 @@ const App = () => {
         Authorization: token
       },
       body: JSON.stringify({
-        author: "asdf",
+        author: "yumin",
         taskList: Object.values(todos.taskList)
       }
       )
@@ -232,7 +232,10 @@ const App = () => {
 
       {
         downloadToggle &&
-        <TodoDownload />
+        <TodoDownload
+          onDownloadToggle={onDownloadToggle}
+          DownloadData={DownloadData}
+        />
       }
 
       {
