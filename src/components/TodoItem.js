@@ -31,11 +31,11 @@ const TodoItem = ({
             <div className={isDone ? "content" : "nocontent"}>
                 {isDone ? (<MdCheckBox onClick={() => onCheckToggle(id)} />) : (<MdCheckBoxOutlineBlank onClick={() => onCheckToggle(id)} />)}
                 <div className="text" onClick={() => { onChangeSelectedTodo(todo); onInsertToggle(); }}>
-                    {id}
-                    <br />
+                    {/* {id}
+                    <br /> */}
                     {description}
-                    <br />
-                    {isDone ? "true" : "false"}
+                    {/* <br />
+                    {isDone ? "true" : "false"} */}
                 </div>
             </div>
         </div>
